@@ -1,0 +1,75 @@
+{% extends "nba_fantasy/league_base.html" %}
+{% load getattribute %}
+{% block title %}{{ league.name }}{% endblock %}
+{% block content %}
+    <h2>{{ league.name }} Week {{ matchup.week_num }}</h2>
+    <h3>{{ matchup.away_team.city }} {{ matchup.away_team.name }} @ {{ matchup.home_team.city }} {{ matchup.home_team.name }}</h3>
+
+    <div id="home_team_div">
+        <table id="home_team_table" class="table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    {% for hdr in display_fields %}
+                        <th>{{ hdr }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in home_rows %}
+                    {% if forloop.last %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>{{ entry.player_name }}</th>
+                                {% for fld in scoring_fields %}
+                                    <th>{{ entry.score_fields|getattribute:fld|floatformat }}</th>
+                                {% endfor %}
+                            </tr>
+                        </tfoot>
+                    {% else %}
+                        <tr>
+                            <td>{{entry.player_name}}</td>
+                            {% for fld in scoring_fields %}
+                                <td>{{ entry.score_fields|getattribute:fld|floatformat }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+        </table>
+    </div>
+
+    <div id="away_team_div">
+        <table id="away_team_table" class="table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    {% for hdr in display_fields %}
+                        <th>{{ hdr }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in away_rows %}
+                    {% if forloop.last %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>{{ entry.player_name }}</th>
+                                {% for fld in scoring_fields %}
+                                    <th>{{ entry.score_fields|getattribute:fld|floatformat }}</th>
+                                {% endfor %}
+                            </tr>
+                        </tfoot>
+                    {% else %}
+                        <tr>
+                            <td>{{entry.player_name}}</td>
+                            {% for fld in scoring_fields %}
+                                <td>{{ entry.score_fields|getattribute:fld|floatformat }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+        </table>
+    </div>
+{% endblock %}

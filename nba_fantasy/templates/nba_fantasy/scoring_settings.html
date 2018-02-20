@@ -1,0 +1,118 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} {{ league.name }} Scoring Settings {% endblock %}
+{% block content %}
+
+Scoring Settings<br>
+{{ league.id }}<br>
+{{ league.name }}<br>
+{{ league.num_teams }}<br>
+
+<div class="btn-group" role="group" aria-label="...">
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#options">Options</button>
+  <!-- button type="button" class="btn btn-default" data-toggle="collapse" data-target="#base">Basic</button -->
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#traditional">Traditional</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#advanced">Advanced</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#misc">Misc</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#scoring">Scoring</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#usage">Usage</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#tracking">Tracking</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#four_factors">Four Factors</button>
+  <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#hustle">Hustle</button>
+</div>
+
+<form name="scoring_settings" action="{% url 'nba_fantasy:scoring-settings' league.id %}" method="post">
+    {% csrf_token %}
+    <div id="options" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Options</h3>
+      </div>
+      <div class="panel-body">
+          {{ options }}
+      </div>
+    </div>
+    <!-- div id="base" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Base</h3>
+      </div>
+      <div class="panel-body">
+          {{ base }}
+      </div>
+    </div -->
+
+    <div id="traditional" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Traditional</h3>
+      </div>
+      <div class="panel-body">
+          {{ traditional }}
+      </div>
+    </div>
+
+    <div id="advanced" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Advanced</h3>
+      </div>
+      <div class="panel-body">
+          {{ advanced }}
+      </div>
+    </div>
+
+    <div id="misc" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Misc</h3>
+      </div>
+      <div class="panel-body">
+          {{ misc }}
+      </div>
+    </div>
+
+    <div id="scoring" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Scoring</h3>
+      </div>
+      <div class="panel-body">
+          {{ scoring }}
+      </div>
+    </div>
+
+    <div id="usage" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Usage</h3>
+      </div>
+      <div class="panel-body">
+          {{ usage }}
+      </div>
+    </div>
+
+    <div id="tracking" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Tracking</h3>
+      </div>
+      <div class="panel-body">
+          {{ tracking }}
+      </div>
+    </div>
+
+    <div id="four_factors" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Four Factors</h3>
+      </div>
+      <div class="panel-body">
+          {{ four_factors }}
+      </div>
+    </div>
+
+    <div id="hustle" class="panel panel-default collapse">
+      <div class="panel-heading">
+        <h3 class="panel-title">Hustle</h3>
+      </div>
+      <div class="panel-body">
+          {{ hustle }}
+      </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-default">Save Scoring Settings</button>
+</form>
+
+{% endblock %}

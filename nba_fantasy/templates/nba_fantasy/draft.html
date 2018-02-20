@@ -1,0 +1,69 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} {{ league.name }} | Draft{% endblock %}
+{% block content %}
+
+<h3>Draft</h3>
+<h4>{{ league.name }}</h4>
+<h4>{{ team.city }} {{ team.name }} | {{ team.owner.username }}</h4>
+
+<button type="button" class="btn btn-default" id="draft_player">Draft Player</button>
+<table id="avail_players_table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Player</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in available_players %}
+            <tr id="{{player.id}}_player_row">
+                <td>{{ player.display_first_last }}</td>
+                <td>{{ player.team.abbreviation }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function(){
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + "/nba_fantasy/draft/{{ team.owner.id }}/{{ league.id }}";
+            console.log("Connecting to " + ws_path);
+            var socket = new WebSocket(ws_path);
+            socket.onmessage = function(message){
+                console.log("Got websocket message " + message.data);
+                var data = JSON.parse(message.data);
+                if (data.drafted){
+                    var selected = $("#" + data.selected);
+                    selected.remove();
+                    alert("Drafted player!");
+                }
+            };
+            socket.onopen = function () {
+                console.log("Connected to chat socket");
+            };
+            socket.onclose = function () {
+                console.log("Disconnected from chat socket");
+            };
+            $("#avail_players_table tr").click(function(){
+                $(this).addClass('selected').siblings().removeClass('selected');
+                $(this).addClass('info').siblings().removeClass('info');
+                console.log("Selected");
+                console.log($(this));
+            });
+            $("#draft_player").click(function (e) {
+                console.log("Button clicked!");
+                var selected = $("#avail_players_table tr.selected");
+                console.log(selected);
+                var player_id = parseInt(selected.attr("id").replace("_player_row", ""));
+                console.log(player_id);
+                 socket.send(JSON.stringify({
+                        "team_id": {{ team.id }},
+                        "player_id": player_id
+                    }));
+            })
+        });
+    </script>
+{% endblock %}

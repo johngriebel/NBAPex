@@ -1,0 +1,109 @@
+{% extends "nba_fantasy/league_base.html" %}
+{% load getrelatedset %}
+{% load getotherteams %}
+{% block title %} {{ league.name }} Trade{% endblock %}
+{% block content %}
+
+    Make a Trade<br>
+    {{ league.name }}<br>
+    {{ team.name }}<br>
+    {{ user.username }}<br>
+
+    <button type="button" class="btn btn-default" id="propose_trade">Propose Trade</button>
+    <div id="checkboxes">
+    <h2>{{ team.name }}</h2>
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Trade?</th>
+                    <th>To?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in team|getrelatedset:"fantasyteamrosterentry,end_date__isnull=True" %}
+                    <tr>
+                        <td>{{ entry.player.display_first_last }}</td>
+                        <td><input type="checkbox" id="{{ entry.team.id }}_{{ entry.player.id }}_checkbox"></td>
+                        <td>
+                            <select id="{{ entry.team.id }}_{{ entry.player.id }}_select">
+                                {% for team in team|getotherteams %}
+                                    <option value="{{ team.id }}">{{ team.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% for not_my_team in other_teams %}
+        <h2>{{ not_my_team.name }}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Trade?</th>
+                    <th>To?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in not_my_team|getrelatedset:"fantasyteamrosterentry,end_date__isnull=True" %}
+                    <tr>
+                        <td>{{ entry.player.display_first_last }}</td>
+                        <td><input type="checkbox" id="{{ entry.team.id }}_{{ entry.player.id }}_checkbox"></td>
+                        <td>
+                            <select id="{{ entry.team.id }}_{{ entry.player.id }}_select">
+                                {% for other_team in not_my_team|getotherteams %}
+                                    <option value="{{ other_team.id }}">{{ other_team.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $("#propose_trade").click(function(e){
+            console.log("Button clicked!");
+
+            var players_being_traded = {};
+            $('#checkboxes input:checked').each(function() {
+                var team_player_id = $(this).attr('id').replace("_checkbox", "");
+                var being_sent_to = $("#" + team_player_id + "_select").val();
+                console.log(team_player_id);
+                console.log("being sent to");
+                console.log(being_sent_to);
+                players_being_traded[team_player_id] = parseInt(being_sent_to);
+            });
+            console.log(players_being_traded);
+
+            $.ajax({
+                url: '/nba_fantasy/ajax/propose_trade/',
+                type: 'GET',
+                data: {
+                    'league_id': {{league.id}},
+                    'players_being_traded': JSON.stringify(players_being_traded)
+                },
+                dataType: 'json',
+                success: function(data){
+                    if (data.proposed){
+                        console.log("Trade proposal successful!");
+                        alert("Trade proposal successful!");
+                    }
+                    else {
+                        console.log("Trade proposal unsuccessful!");
+                        alert("Trade proposal unsuccessful!");
+                    }
+                }
+            });
+        });
+</script>
+{% endblock %}

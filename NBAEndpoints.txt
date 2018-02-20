@@ -1,0 +1,250 @@
+League/Player Bios
+URL: http://stats.nba.com/stats/leaguedashplayerbiostats
+Parms:
+    College=
+    Conference=
+    Country=
+    DateFrom=
+    DateTo=
+    Division=
+    DraftPick=
+    DraftYear=
+    GameScope=
+    GameSegment=
+    Height=
+    LastNGames=0
+    LeagueID=00
+    Location=
+    Month=0
+    OpponentTeamID=0
+    Outcome=
+    PORound=0
+    PerMode=PerGame
+    Period=0
+    PlayerExperience=
+    PlayerPosition=
+    Season=2016-17
+    SeasonSegment=
+    SeasonType=Regular+Season
+    ShotClockRange=
+    StarterBench=
+    TeamID=0
+    VsConference=
+    VsDivision=
+    Weight=
+
+League Game Logs
+URL: http://stats.nba.com/stats/leaguegamelog
+Parms:
+    Counter=1000
+    DateFrom=
+    DateTo=
+    Direction=DESC
+    LeagueID=00
+    PlayerOrTeam=P
+    Season=2016-17
+    SeasonType=Regular+Season
+    Sorter=DATE
+
+League Shooting
+URL: http://stats.nba.com/stats/leaguedashplayershotlocations
+Parms:
+    College=
+    Conference=
+    Country=
+    DateFrom=
+    DateTo=
+    DistanceRange=[5ft+Range | 8ft+Range | By+Zone]
+    Division=
+    DraftPick=
+    DraftYear=
+    GameScope=
+    GameSegment=
+    Height=
+    LastNGames=0
+    LeagueID=00
+    Location=
+    MeasureType=Base
+    Month=0
+    OpponentTeamID=0
+    Outcome=
+    PORound=0
+    PaceAdjust=N
+    PerMode=[PerGame | Totals]
+    Period=0
+    PlayerExperience=
+    PlayerPosition=
+    PlusMinus=N
+    Rank=N
+    Season=2016-17
+    SeasonSegment=
+    SeasonType=Regular+Season
+    ShotClockRange=
+    StarterBench=
+    TeamID=0
+    VsConference=
+    VsDivision=
+    Weight=
+
+League Hustle Stats:
+URL: http://stats.nba.com/stats/leaguehustlestatsplayer
+Parms:
+    College=
+    Conference=
+    Country=
+    DateFrom=
+    DateTo=
+    Division=
+    DraftPick=
+    DraftYear=
+    GameScope=
+    Height=
+    LastNGames=0
+    LeagueID=00
+    Location=
+    Month=0
+    OpponentTeamID=0
+    Outcome=
+    PORound=0
+    PaceAdjust=N
+    PerMode=[PerGame | Totals | PerMinute]
+    PlayerExperience=
+    PlayerPosition=
+    PlusMinus=N
+    Rank=N
+    Season=2016-17
+    SeasonSegment=
+    SeasonType=Regular+Season
+    TeamID=0
+    VsConference=
+    VsDivision=
+    Weight=
+
+League Shot Dashboard
+Note: There are a bunch of sub-pages for shot. They are General, Shotclock, Dribbles, Touch Time,
+      Closest Defender, and Closest Defender +10. Come back and figure out all the parms to hit
+      these pages eventually.
+URL: http://stats.nba.com/stats/leaguedashplayerptshot
+Parms:
+    CloseDefDistRange=
+    College=
+    Conference=
+    Country=
+    DateFrom=
+    DateTo=
+    Division=
+    DraftPick=
+    DraftYear=
+    DribbleRange=
+    GameScope=
+    GameSegment=
+    GeneralRange=Overall
+    Height=
+    LastNGames=0
+    LeagueID=00
+    Location=
+    Month=0
+    OpponentTeamID=0
+    Outcome=
+    PORound=0
+    PaceAdjust=N
+    PerMode=PerGame
+    Period=0
+    PlayerExperience=
+    PlayerPosition=
+    PlusMinus=N
+    Rank=N
+    Season=2016-17
+    SeasonSegment=
+    SeasonType=Regular+Season
+    ShotClockRange=
+    ShotDistRange=
+    StarterBench=
+    TeamID=0
+    TouchTimeRange=
+    VsConference=
+    VsDivision=
+    Weight=
+
+League Defense Dashboard
+Note: Sub-pages include Overall, 3 Pointers, 2 Pointers, < 6ft., < 10ft., > 15ft. This seems to
+      be controlled by the DefenseCategory Parameter
+URL: http://stats.nba.com/stats/leaguedashptdefend
+Parms:
+    College=
+    Conference=
+    Country=
+    DateFrom=
+    DateTo=
+    DefenseCategory=Overall
+    Division=
+    DraftPick=
+    DraftYear=
+    GameSegment=
+    Height=
+    LastNGames=0
+    LeagueID=00
+    Location=
+    Month=0
+    OpponentTeamID=0
+    Outcome=
+    PORound=0
+    PerMode=PerGame
+    Period=0
+    PlayerExperience=
+    PlayerPosition=
+    Season=2016-17
+    SeasonSegment=
+    SeasonType=Regular+Season
+    StarterBench=
+    TeamID=0
+    VsConference=
+    VsDivision=
+    Weight=
+
+League Player Tracking
+Note: Sub-pages are controlled by the PtMeasureType Parm
+URL: http://stats.nba.com/stats/leaguedashptstats
+Parms:
+    College=
+    Conference=
+    Country=
+    DateFrom=
+    DateTo=
+    Division=
+    DraftPick=
+    DraftYear=
+    GameScope=
+    Height=
+    LastNGames=0
+    LeagueID=00
+    Location=
+    Month=0
+    OpponentTeamID=0
+    Outcome=
+    PORound=0
+    PerMode=PerGame
+    PlayerExperience=
+    PlayerOrTeam=Player
+    PlayerPosition=
+    PtMeasureType=Drives
+    Season=2016-17
+    SeasonSegment=
+    SeasonType=Regular+Season
+    StarterBench=
+    TeamID=0
+    VsConference=
+    VsDivision=
+    Weight=
+
+League Play Type
+Note: This is a weird endpoint, even for stats.nba.com. Will have to play around with it a good bi
+      to understand all the parms and what not.
+URL: http://stats-prod.nba.com/wp-json/statscms/v1/synergy/player/
+Parms:
+    category=Transition
+    limit=500
+    names=offensive
+    q=2485662
+    season=2016
+    seasonType=Reg

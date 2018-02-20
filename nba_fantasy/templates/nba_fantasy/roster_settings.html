@@ -1,0 +1,21 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} Roster Settings {% endblock %}
+{% block content %}
+{{ league.id }}<br>
+{{ league.name }}<br>
+{{ league.num_teams }}<br>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <form action="{% url 'nba_fantasy:roster-settings'%}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<br>
+                <input type="submit" value="Save Roster Settings"/>
+            </form>
+            </span-->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

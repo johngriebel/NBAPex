@@ -1,0 +1,29 @@
+{% extends 'nba_fantasy/league_base.html' %}
+{% block title %}{{ league.name }} | Standings{% endblock %}
+
+{% block content %}
+    <div id="standings_div">
+        <table id="standings_table" class="table">
+            <thead>
+                <tr>
+                    <th>Team</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>Ties</th>
+                    <th>Win Pct</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cur_team in team_standings %}
+                    <tr>
+                        <td><a href="{% url 'nba_fantasy:view-team' cur_team.id %}">{{ cur_team.city }} {{ cur_team.name }}</a></td>
+                        <td>{{ cur_team.wins }}</td>
+                        <td>{{ cur_team.losses }}</td>
+                        <td>{{ cur_team.ties }}</td>
+                        <td>{{ cur_team.win_pct }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

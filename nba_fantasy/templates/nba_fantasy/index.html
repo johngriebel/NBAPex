@@ -1,0 +1,14 @@
+{% extends 'nba_stats/base.html' %}
+{% block title %}NBAPex | Fantasy Basketball{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="list-group">
+                {% for team in my_teams %}
+                    <a href="{% url 'nba_fantasy:view-team' team.id %}" class="list-group-item">{{ team.city }} {{ team.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

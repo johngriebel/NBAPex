@@ -1,0 +1,28 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} {{ league.name }} Draft Settings {% endblock %}
+{% block content %}
+
+Draft Settings<br>
+{{ league.id }}<br>
+{{ league.name }}<br>
+{{ league.num_teams }}<br>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <form action="{% url 'nba_fantasy:draft-settings' league.id %}" method="post">
+                {% csrf_token %}
+                {{ form }}<br>
+                <input type="submit" value="Save Draft Settings"/>
+            </form>
+
+            <!--input type="text" class="form-control" placeholder="Server's hostname" id="server_name">
+            <span-- class="input-group-btn">
+                <button class="btn btn-default" type="button" id="add_server">Add</button>
+            </span-->
+        </div><!-- /input-group -->
+    </div>
+</div>
+
+{% endblock %}

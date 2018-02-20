@@ -1,0 +1,25 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} Edit Team {% endblock %}
+{% block content %}
+
+{{ league.name }}<br>
+Edit Team<br>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <form action="{% url 'nba_fantasy:edit-team' league.id team.id%}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<br>
+                <input type="submit" value="Save Team"/>
+            </form>
+
+            <!--input type="text" class="form-control" placeholder="Server's hostname" id="server_name">
+            <span-- class="input-group-btn">
+                <button class="btn btn-default" type="button" id="add_server">Add</button>
+            </span-->
+        </div><!-- /input-group -->
+    </div>
+</div>
+
+{% endblock %}

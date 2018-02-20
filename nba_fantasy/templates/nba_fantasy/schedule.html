@@ -1,0 +1,48 @@
+{% extends "nba_fantasy/league_base.html" %}
+{% load filterqueryset %}
+{% block title %}{{ league.name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ league.name }} Schedule</h1>
+    <div class="btn-group" role="group" aria-label="...">
+        {% for week in weeks %}
+            <button type="button" class="btn btn-default"
+                    data-toggle="collapse" data-target="#week_{{ forloop.counter0 }}">{{ forloop.counter0 }}</button>
+        {% endfor %}
+    </div>
+    {% for week in weeks %}
+        <div id="week_{{ forloop.counter0 }}" class="collapse">
+            <table class="table" >
+                <thead>
+                    <tr>
+                       <th>Week</th>
+                        <th>Away Team</th>
+                        <th>Home Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for matchup in week %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'nba_fantasy:matchup' matchup_id=matchup.id %}">
+                                {{ matchup.week_num }}
+                            </a>
+                        </td>
+                        <td>{{ matchup.away_team.city }} {{ matchup.away_team.name }}</td>
+                        <td>{{ matchup.home_team.city }} {{ matchup.home_team.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var curWeek = {{ cur_week }};
+        console.log(curWeek);
+        var curWeekDiv = $("#week_" + curWeek.toString());
+        curWeekDiv.collapse("show");
+    </script>
+{% endblock %}

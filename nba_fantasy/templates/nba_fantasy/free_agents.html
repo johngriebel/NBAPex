@@ -1,0 +1,59 @@
+{% extends "nba_fantasy/league_base.html" %}
+{% block title %} {{ league.name }} Free Agents{% endblock %}
+{% block content %}
+
+Free Agents<br>
+{{ league.id }}<br>
+{{ league.name }}<br>
+{{ league.num_teams }}<br>
+
+<table id="fa_players_table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Player</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in fa_players %}
+            <tr id="{{player.id}}_player_row">
+                <td>{{ player.display_first_last }}</td>
+                <td><button type="button" class="btn btn-default" id="{{player.id}}_button">Add</button></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(".btn").click(function(e){
+            console.log("Button clicked!");
+            var id = $(this).attr("id").replace("_button", "");
+            var player_id = parseInt(id);
+            console.log(player_id);
+
+            $.ajax({
+                url: '/nba_fantasy/ajax/add_free_agent/',
+                type: 'GET',
+                data: {
+                    'league_id': {{league.id}},
+                    'fantasy_team_id': {{ team.id }},
+                    'player_id': player_id
+                },
+                dataType: 'json',
+                success: function(data){
+                    if (data.added){
+                        console.log("Added player!");
+                        alert("Added player!");
+                    }
+                    else {
+                        console.log("failed to add player!");
+                        alert("failed to add player!");
+                    }
+                }
+            });
+        });
+</script>
+{% endblock %}

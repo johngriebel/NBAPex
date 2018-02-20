@@ -1,0 +1,23 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} {{ league.name }} Schedule Settings {% endblock %}
+{% block content %}
+
+Schedule Settings<br>
+{{ league.id }}<br>
+{{ league.name }}<br>
+{{ league.num_teams }}<br>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <form action="{% url 'nba_fantasy:schedule-settings' %}" method="post">
+                {% csrf_token %}
+                {{ form }}<br>
+                <input type="submit" value="Save Schedule Settings"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

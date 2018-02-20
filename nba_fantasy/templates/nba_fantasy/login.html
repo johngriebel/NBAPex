@@ -1,0 +1,17 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} Login to NBAPex Fantasy {% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <form action="{% url 'nba_fantasy:login' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<br>
+                <input type="submit" value="Login"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

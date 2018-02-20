@@ -1,0 +1,28 @@
+{% load getattribute %}
+
+<h3>This is the sortable player stats page</h3>
+{% if seasons %}
+	<table id="player_seasons" border="1">
+		{% if header_fields %}
+			<tr>
+				{% for header in header_fields %}
+					<th>{{ header }}</th>
+				{% endfor %}
+			</tr>
+			{% for season in seasons %}
+				<tr>
+					{% for field in model_fields %}
+						{% if field == 'player' %}
+							<td> <a href="{% url 'nba_stats:player' player_id=season.player.id %}">{{season.player.display_first_last }}</a></td>
+						{% elif field == 'team' %}
+							<!-- Apparently td align is not support in HTML5. TODO: Start using CSS...-->
+							<td align="center"><a href="{% url 'nba_stats:team' team_id=season.team.id %}">{{ season.team.team_abbreviation }}</a></td>
+						{% else %}
+							<td align="center">{{ season|getattribute:field}}</td>
+						{% endif %}
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		{% endif %}
+	</table>
+{% endif %}

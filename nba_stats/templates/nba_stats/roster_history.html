@@ -1,0 +1,47 @@
+{% extends 'nba_stats/base.html' %}
+{% load static %}
+{% block title %}NBAPex Roster History{% endblock %}
+
+{% block content %}
+    <script src={% static 'moment/js/moment.js' %}></script>
+    <link href="{% static 'bootstrap-datepicker/css/bootstrap-datepicker3.min.css' %}" rel="stylesheet">
+    <script src={% static 'bootstrap-datepicker/js/bootstrap-datepicker.js' %}></script>
+    <link href="{% static 'bootstrap-combobox/css/bootstrap-combobox.css' %}" rel="stylesheet">
+    <script src={% static 'bootstrap-combobox/js/bootstrap-combobox.js' %}></script>
+    <script src={% static 'd3/d3.min.js' %}></script>
+    <style>
+        .links line {
+          stroke: #999;
+          stroke-opacity: 0.6;
+        }
+        .nodes circle {
+          stroke: #fff;
+          stroke-width: 1.5px;
+        }
+
+    </style>
+    <!-- For whatever reason, this isn't quite working right. It's not styled.-->
+    <div id="roster-date-div" class="input-group date">
+        <input id="roster-date" type="text" class="form-control">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-th"></i>
+            </span>
+    </div>
+    <div id="team-div">
+        <select id="teams" class="combobox">
+            <option></option>
+            {% for team in teams %}
+                <option value="{{ team.id }}">{{ team.city }} {{ team.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <button type="button" class="btn btn-default" id="get_roster_button">Go</button>
+    </div>
+    <svg width="960" height="600"></svg>
+    <div id="roster_table_div"></div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'nba_stats/js/roster_history.js' %}"></script>
+{% endblock %}

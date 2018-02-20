@@ -1,0 +1,15 @@
+{% extends "nba_stats/base.html" %}
+
+{% block content %}
+<div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <form action="{% url 'nba_stats:admin_portal' %}" method="post">
+                    {% csrf_token %}
+                    {{ form }}<br>
+                    <input type="submit" value="Go!"/>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

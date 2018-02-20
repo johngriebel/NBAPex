@@ -1,0 +1,54 @@
+{% extends 'nba_stats/base.html' %}
+{% load getattribute %}
+
+
+{% block title %} Games {% endblock %}
+
+{% block content %}
+<!-- I've put a fair amount of logic in this file. Not sure if I like it, but it's all UI related. -->
+
+{% for game in games %}
+    <div id="div_{{ game.id }}" class="col-md-8">
+        <table id="table_{{ game.id }}" class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    {% with line_score=line_scores|getattribute:game.visitor_team.id %}
+                        {% for period in line_score %}
+                            {% if forloop.last %}
+                                <th>Final</th>
+                            {% elif forloop.counter < 5 %}
+                                <th>Q{{ forloop.counter }}</th>
+                            {% else %}
+                                <th>OT{{ forloop.counter|add:"-4" }}</th>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </tr>
+            </thead>
+            <tr>
+                {% with line_score=line_scores|getattribute:game.visitor_team.id %}
+                    <td>{{ game.visitor_team.city }} {{ game.visitor_team.name }}</td>
+                    {% for val in line_score %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                {% endwith %}
+            </tr>
+            <tr>
+                {% with line_score=line_scores|getattribute:game.home_team.id %}
+                    <td>{{ game.home_team.city }} {{ game.home_team.name }}</td>
+                    {% for val in line_score %}
+                        <td>{{ val }}</td>
+                    {% endfor %}
+                {% endwith %}
+            </tr>
+            <tr>
+                <td colspan="2">{{ game.live_period_time_bcast }}</td>
+                <td colspan="2"> Attendance: {{ game.attendance }}</td>
+                <td colspan="2"> Duration: {{ game.game_time }}</td>
+            </tr>
+        </table>
+    </div>
+{% endfor %}
+
+{% endblock %}

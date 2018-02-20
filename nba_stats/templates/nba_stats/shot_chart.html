@@ -1,0 +1,57 @@
+{% extends "nba_stats/base.html" %}
+{% load static %}
+{% load getattribute %}
+{% block title %}NBAPex Shot Chart Viewer{% endblock %}
+{% block content %}
+    <!-- Might move this to base.html at some point, but as of now it's not needed there -->
+    <script src={% static 'd3/d3.min.js' %}></script>
+    <link href="{% static 'bootstrap-combobox/css/bootstrap-combobox.css' %}" rel="stylesheet">
+    <script src={% static 'bootstrap-combobox/js/bootstrap-combobox.js' %}></script>
+    <link href="{% static 'slider/css/slider.css' %}" rel="stylesheet">
+    <script src="{% static 'slider/js/bootstrap-slider.js' %}"></script>
+
+    <style>
+        body {
+          font: 11px sans-serif;
+        }
+
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #000;
+          shape-rendering: crispEdges;
+        }
+
+        .dot {
+          stroke: #000;
+        }
+
+        .tooltip {
+          position: absolute;
+          width: 200px;
+          height: 28px;
+          pointer-events: none;
+        }
+    </style>
+    <div class="col-md-12">
+        <div class="col-lg-6">
+            <select id="players" class="combobox">
+                <option></option>
+                {% for player in players %}
+                    <option value="{{ player.id }}">{{ player.display_first_last }}</option>
+                {% endfor %}
+            </select>
+            <select id="seasons" class="combobox">
+                <option></option>
+                {% for year in seasons %}
+                    <option value={{ year }}>{{ seasons|getattribute:year }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="btn btn-default" id="fetch_data_button">Go</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'nba_stats/js/shot_chart.js' %}"></script>
+{% endblock %}

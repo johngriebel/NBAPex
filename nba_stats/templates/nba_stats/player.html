@@ -1,0 +1,291 @@
+{% extends "nba_stats/base.html" %}
+{% load static %}
+
+{% block title %}NBAPex | {{ player.display_first_last }}{% endblock %}
+
+{% block content %}
+    <link href="{% static 'nba_stats/css/player.css' %}" rel="stylesheet">
+    <div class="panel panel-player" id="player_{{ player.id }}">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel-body panel-left">
+                    <div>
+                        <img src="{% static 'nba_stats/images/players/' %}{{ player.player_id }}.png" alt="Player Image"/>
+                    </div>
+                    <div>
+                        <h3>{{ player.display_first_last }}</h3>
+                        <h5>{{ player.position }} - #{{ player.jersey }}</h5>
+                        <h5>{{ player.team }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3 style="text-align: center">Bio</h3>
+                <b>Height:</b> {{ player.height }}<br>
+                <b>Weight:</b> {{ player.weight }} lbs. <br>
+                <b>Birthdate:</b> {{ player.birthdate }} <br>
+                <b>Drafted:</b> {{ player.draft_year }} Round {{ player.draft_round }} Pick {{ player.draft_number }} <br>
+                <b>Experience:</b> {{ player.season_exp }} years<br>
+                <b>Last Transaction:</b> <br>
+                {{ last_transaction }}
+
+            </div>
+            <div class="col-md-4">
+                <h3 style="text-align: center">At A Glance</h3>
+                <!-- TODO: Make this a nifty little bar chart. -->
+                <b>
+                    {{ cur_season.pts }} pts<br>
+                    {{ cur_season.reb }} reb<br>
+                    {{ cur_season.ast }} ast<br>
+                    {{ cur_season.blk }} blk<br>
+                    {{ cur_season.stl }} stl<br>
+                    {{ cur_season.tov }} tov<br>
+                </b>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" onclick="seasonButtonClick();">Seasons</button>
+                <button type="button" class="btn btn-default" onclick="splitButtonClick();">Splits</button>
+                <button type="button" class="btn btn-default">Player Tracking</button>
+            </div>
+        </div>
+        <div id="season_panel" class="panel-body collapse">
+            <div id="season_per_mode_select_div">
+                <select id="season_per_mode_select" onchange="seasonType();" class="form-control">
+                    <option value="per_game">PerGame</option>
+                    <option value="totals">Totals</option>
+                    <option value="per_36">Per 36</option>
+                </select>
+                <select id="season_type_select" onchange="seasonType()" class="form-control">
+                    <option value="regular_season">Regular</option>
+                    <option value="playoffs">Playoffs</option>
+                    <option value="all_star">All Star</option>
+                </select>
+            </div>
+            <table id="regular_season_per_game_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in regular_season_per_game %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_regular_pg %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="regular_season_totals_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in regular_season_totals %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_regular_totals %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="regular_season_per_36_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in regular_season_per_36 %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_regular_per_36 %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="playoffs_per_game_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in playoff_per_game %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_playoff_pg %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="playoffs_totals_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in playoff_totals %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_playoff_totals %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="playoffs_per_36_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in playoff_per_36 %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_playoff_per_36 %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="all_star_per_game_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in all_star_pg %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_all_star_pg %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="all_star_totals_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in all_star_totals %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_all_star_totals %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+            <table id="all_star_per_36_table" class="table table-striped collapse">
+                <thead>
+                    <tr>
+                        {% for hdr in headers %}
+                            <th>{{ hdr }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for season in all_star_per_36 %}
+                        <tr>
+                            {% for val in season %}
+                                <td>{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        {% for val in career_all_star_per_36 %}
+                            <td>{{ val }}</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div id="split_panel" class="panel-body collapse">
+            <div id="split_selection_div"></div>
+            <div id="split_data_div"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var playerJSON = '{{ player_json|escapejs }}';
+        var entityObj = JSON.parse(playerJSON);
+        var model = 'player';
+    </script>
+    <script src="{% static 'nba_stats/js/player.js' %}"></script>
+{% endblock %}

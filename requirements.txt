@@ -1,0 +1,16 @@
+django
+beautifulsoup4
+requests
+simplejson
+dicttoxml
+factory_boy
+nose2
+nba_py
+channels
+pytz
+djangorestframework
+asgi_redis
+pandas
+html5lib
+lxml
+click

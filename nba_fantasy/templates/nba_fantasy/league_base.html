@@ -1,0 +1,12 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} {{league.name}}{% endblock %}
+{% block subnav %}
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="{% url 'nba_fantasy:league-homepage' league.id %}">League Home</a></li>
+        <li role="presentation"><a href="{% url 'nba_fantasy:view-team' team_id %}">Team</a></li>
+        <li role="presentation"><a href="{% url 'nba_fantasy:free-agents' league.id %}">Free Agents</a></li>
+        <li role="presentation"><a href="{% url 'nba_fantasy:standings' league.id %}">Standings</a></li>
+        <li role="presentation"><a href="{% url 'nba_fantasy:schedule' league.id %}">Matchups</a></li>
+    </ul>
+    <br>
+{% endblock %}

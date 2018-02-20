@@ -1,0 +1,89 @@
+{% extends "nba_fantasy/league_base.html" %}
+
+{% load static %}
+{% load getattribute %}
+{% load getrelatedset %}
+{% load getotherteams %}
+{% load translatefield %}
+
+{% block title %}{{ team.city }} {{ team.name }}{% endblock %}
+{% block content %}
+    <link href="{% static 'bootstrap-datepicker/css/bootstrap-datepicker3.min.css' %}" rel="stylesheet">
+    <script src={% static 'bootstrap-datepicker/js/bootstrap-datepicker.js' %}></script>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#roster_div">Roster</button>
+        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#pending_trades_div">Pending Trades</button>
+    </div>
+    <div id="pending_trades_div" class="collapse">
+        <table id="pending_trades_table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Outgoing</th>
+                    <th>Incoming</th>
+                    <th>Expiry Date</th>
+                    <th>Accept?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trade in pending_trades %}
+                    <tr>
+                        <td>{{ trade.outgoing_players }}</td>
+                        <td>{{ trade.incoming_players }}</td>
+                        <td>{{ trade.expiry_time }}</td>
+                        <td>
+                            <a href="{% url 'nba_fantasy:accept-trade' transaction_id=trade.id %}">
+                            <button type="button" class="btn btn-default" id="accept_trade">Accept</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'nba_fantasy:trade' league.id %}"><button type="button" class="btn btn-default">New Trade</button></a>
+    </div>
+    <div id="roster_div">
+        <div id="roster_date_div" class="input-group date">
+            <input id="roster_date" type="text" class="form-control datepicker" value={{ default_date_str }}>
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+        </div>
+        <div id="alert_div"></div>
+        <table class="table table-striped">
+            <thead>
+                <th>Move?</th>
+                <th>Position</th>
+                <th>Player</th>
+                <th>Team</th>
+                <th>Matchup</th>
+                <th>Game Status</th>
+                {% for fld in score_fields %}
+                    <th>{{ fld|translatefield }}</th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for entry in lineup_entries %}
+                    <tr>
+                        <td><button type="button" id="ros_button_{{ forloop.counter0 }}" data-player-id="{{ entry.player_id }}" data-player-position="{{ entry.position }}" class="btn btn-default btn-info btn-roster {{ entry.eligibility_classes }}" onclick="movePlayerButtonClicked(this);">Move</button></td>
+                        <td class="td-player-position">{{ entry.display_position }}</td>
+                        <td>{{ entry.player }}</td>
+                        <td>{{ entry.team }}</td>
+                        <td>{{ entry.matchup }}</td>
+                        <td>{{ entry.matchup_status }}</td>
+                        {% for fld in score_fields %}
+                            <td>{{ entry|getattribute:fld }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    <script>
+        var viewTeamBaseURL = "{% url 'nba_fantasy:view-team' team.id%}";
+        var ajaxURL = "{% url 'nba_fantasy:ajax-update-fantasy-lineup' %}";
+    </script>
+    <script src="{% static 'nba_fantasy/js/view_team.js' %}"></script>
+{% endblock %}

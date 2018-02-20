@@ -1,0 +1,23 @@
+{% extends "nba_stats/base.html" %}
+{% block title %} {{ league.name }} Transaction Settings {% endblock %}
+{% block content %}
+{{ league.id }}<br>
+{{ league.name }}<br>
+{{ league.num_teams }}<br>
+
+{{rset.id }}<br>
+{{rset.point_guards}}<br>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <form action="{% url 'nba_fantasy:transaction-settings' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}<br>
+                <input type="submit" value="Save Transaction Settings"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

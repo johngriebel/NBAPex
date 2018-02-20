@@ -1,0 +1,118 @@
+{% extends "nba_stats/base.html" %}
+
+{% block title %}NBAPex | Create Fantasy League {% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#league">Basic Settings</button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#transaction">Transactions</button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#schedule">Schedule</button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#draft">Draft</button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#scoring">Scoring</button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#roster">Roster</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <form name="create_league_form" action="{% url 'nba_fantasy:create-league' %}" method="post" novalidate>
+                    {% csrf_token %}
+                    <div id="league" class="panel panel-default collapse">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Basic</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{ form.as_p }}
+                        </div>
+                    </div>
+                    <div id="transaction" class="panel panel-default collapse">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Transaction</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{ transaction.as_p }}
+                        </div>
+                    </div>
+                    <div id="schedule" class="panel panel-default collapse">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Schedule</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{ schedule.as_p }}
+                        </div>
+                    </div>
+                    <div id="draft" class="panel panel-default collapse">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Draft</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{ draft.as_p }}
+                        </div>
+                    </div>
+                    <div id="scoring" class="panel panel-default collapse">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Scoring</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{ scoring_options.as_p }}
+                            <div class="btn-group" role="group" aria-label="...">
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#traditional">Traditional</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#advanced">Advanced</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#misc">Misc</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#scoring">Scoring</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#usage">Usage</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tracking">Tracking</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#four_factors">Four Factors</button>
+                              <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#hustle">Hustle</button>
+                            </div>
+                            <div id="traditional" class="collapse">
+                                <h4>Traditional</h4>
+                                {{ traditional.as_p }}
+                            </div>
+                            <div id="advanced" class="collapse">
+                                <h4>Advanced</h4>
+                                {{ advanced.as_p }}
+                            </div>
+                            <div id="misc" class="collapse">
+                                <h4>Misc</h4>
+                                {{ misc.as_p }}
+                            </div>
+                            <div id="scoring" class="collapse">
+                                <h4>Scoring</h4>
+                                {{ scoring.as_p }}
+                            </div>
+                            <div id="usage" class="collapse">
+                                <h4>Usage</h4>
+                                {{ usage.as_p }}
+                            </div>
+                            <div id="tracking" class="collapse">
+                                <h4>Tracking</h4>
+                                {{ tracking.as_p }}
+                            </div>
+                            <div id="four_factors" class="collapse">
+                                <h4>Four Factors</h4>
+                                {{ four_factors.as_p }}
+                            </div>
+                            <div id="hustle" class="collapse">
+                                <h4>Hustle Stats</h4>
+                                {{ hustle.as_p }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="roster" class="panel panel-default collapse">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Roster</h3>
+                        </div>
+                        <div class="panel-body">
+                            {{ roster.as_p }}
+                        </div>
+                    </div>
+                    <input type="submit" value="Create League"/>
+                </form>
+            </div><!-- /input-group -->
+        </div>
+    </div>
+{% endblock %}

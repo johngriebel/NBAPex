@@ -1,0 +1,47 @@
+{% extends 'nba_stats/base.html' %}
+{% load static %}
+{% load getattribute %}
+{% load translatefield %}
+
+{% block title %} BYOQ {% endblock %}
+{% block content %}
+    <script src={% static 'd3/d3.js' %}></script>
+    <style>
+
+        .links line {
+        stroke: #999;
+        stroke-opacity: 0.6;
+        }
+
+        .nodes circle {
+        stroke: #fff;
+        stroke-width: 1.5px;
+        }
+
+    </style>
+    <form id="user_query_form">
+        <div id="model_div" class="col-md-4">
+            <h3>Tables</h3>
+            <select id="model" class="form-control" onchange="setFieldsDropdown();">
+                <option></option>
+                {% for model in models %}
+                    <option class="model-option" value="{{ model }}">{{ model }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="btn btn-default" id="send_user_query">Go</button>
+        </div>
+        <div id="all_filters_div" class="col-md-4">
+            <h3>Filters</h3>
+            <button type="button" class="btn btn-default" id="add_filter_button">Add Filter</button>
+        </div>
+        <div id="all_fields_div" class="col-md-4">
+            <h3>Selected Fields</h3>
+        </div>
+    </form>
+    <svg width="960" height="600"></svg>
+    <div id="results_div" class="col-md-12"></div>
+{% endblock %}
+
+{%  block javascript %}
+    <script src="{% static 'nba_stats/js/user_query.js' %}"></script>
+{% endblock %}
