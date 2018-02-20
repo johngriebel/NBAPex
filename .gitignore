@@ -1,0 +1,17 @@
+**/logs
+*.xml
+settings.py
+*.pyc
+*pycache*
+super_secret_passwords.py
+/static/bootstrap*
+/static/d3/*
+/static/moment/*
+/static/slider/*
+/static/nba_stats/images/*
+*DS_Store*
+.idea/
+/static/nba_stats/data/
+*.xlsx
+nohup.out
+normal-django
